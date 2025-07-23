@@ -22,9 +22,13 @@ const pool = mysql.createPool({
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
     database: 'C237Team39_identitydo',
+<<<<<<< HEAD
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
+=======
+    port:'61002'
+>>>>>>> 4c80bbb1bc2f62eb39f3a4c7a323a42d2c7c3b81
 });
 
 pool.query('SELECT * FROM products', (err, results) => {
@@ -81,26 +85,29 @@ const checkAdmin = (req, res, next) => {
     }
 };
 
+
 // Middleware for form validation
+console.log('BODY:', req.body);
+ 
 const validateRegistration = (req, res, next) => {
     const { username, email, password, address, contact, role } = req.body;
-
+ 
     if (!username || !email || !password || !address || !contact || !role) {
-        return res.status(400).send('All fields are required.');
-    }
-    
-    if (password.length < 6) {
-        req.flash('error', 'Password should be at least 6 or more characters long');
+        req.flash('error', 'All fields are required.');
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
+ 
+    if (password.length < 6) {
+        req.flash('error', 'Password must be at least 6 characters.');
+        req.flash('formData', req.body);
+        return res.redirect('/register');
+    }
+ 
     next();
 };
+ 
 
-// Define routes
-app.get('/',  (req, res) => {
-    res.render('index', {user: req.session.user} );
-});
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
@@ -115,19 +122,32 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', validateRegistration, (req, res) => {
-
     const { username, email, password, address, contact, role } = req.body;
 
+    console.log('Register data:', req.body); 
+
+    if (!username || !email || !password || !address || !contact || !role) {
+        req.flash('error', 'All fields are required.');
+        req.flash('formData', req.body);
+        return res.redirect('/register');
+    }
+
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
+    
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
-            throw err;
+            console.error('Registration error:', err);
+            req.flash('error', 'Registration failed. Please try again.');
+            req.flash('formData', req.body);
+            return res.redirect('/register'); 
         }
-        console.log(result);
+
+        console.log('User inserted:', result);
         req.flash('success', 'Registration successful! Please log in.');
-        res.redirect('/login');
+        return res.redirect('/login'); 
     });
 });
+
 
 app.get('/login', (req, res) => {
     res.render('login', { messages: req.flash('success'), errors: req.flash('error') });
@@ -320,6 +340,12 @@ app.get('/deleteProduct/:id', (req, res) => {
             res.redirect('/inventory');
         }
     });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err.stack);
+    res.status(500).send('Something broke!');
 });
 
 const PORT = process.env.PORT || 3000;
