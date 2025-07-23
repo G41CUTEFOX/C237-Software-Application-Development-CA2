@@ -21,7 +21,8 @@ const connection = mysql.createConnection({
     host: 'mfk1th.h.filess.io',
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
-    database: 'C237Team39_identitydo'
+    database: 'C237Team39_identitydo',
+    port:'61002'
 });
 
 
