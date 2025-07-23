@@ -81,15 +81,18 @@ const validateRegistration = (req, res, next) => {
     const { username, email, password, address, contact, role } = req.body;
 
     if (!username || !email || !password || !address || !contact || !role) {
-        return res.status(400).send('All fields are required.');
+        req.flash('error', 'All fields are required.');
+        req.flash('formData', req.body);
+        return res.redirect('/register'); 
     }
-    
+
     if (password.length < 6) {
-        req.flash('error', 'Password should be at least 6 or more characters long');
+        req.flash('error', 'Password must be at least 6 characters.');
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
-    next();
+
+    next(); 
 };
 
 // Define routes
