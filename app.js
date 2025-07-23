@@ -114,7 +114,7 @@ app.post('/register', validateRegistration, (req, res) => {
 
     console.log("Registering user:", { username, email, address, contact, role });
 
-    const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
             console.error('Registration error:', err.message);
