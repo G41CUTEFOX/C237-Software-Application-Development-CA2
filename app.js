@@ -96,13 +96,7 @@ const validateRegistration = (req, res, next) => {
 };
 
 // Define routes
-app.get('/register', (req, res) => {
-    console.log("Rendering register page");
-    res.render('register', {
-        messages: req.flash('error'),
-        formData: req.flash('formData')[0] || {}
-    });
-});
+
 
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
@@ -120,21 +114,27 @@ app.get('/register', (req, res) => {
 app.post('/register', validateRegistration, (req, res) => {
     const { username, email, password, address, contact, role } = req.body;
 
-    console.log('Register data:', req.body); // Check if body has values
+    console.log('Register data:', req.body); // Confirm form submission
+
+    if (!username || !email || !password || !address || !contact || !role) {
+        req.flash('error', 'All fields are required.');
+        req.flash('formData', req.body);
+        return res.redirect('/register');
+    }
 
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
     
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
-            console.error('Registration error:', err);  // ✅ Log the actual SQL error
+            console.error('Registration error:', err);
             req.flash('error', 'Registration failed. Please try again.');
             req.flash('formData', req.body);
-            return res.redirect('/register'); // ✅ Ensure response is returned
+            return res.redirect('/register'); // ✅ return added to avoid hang
         }
 
         console.log('User inserted:', result);
         req.flash('success', 'Registration successful! Please log in.');
-        res.redirect('/login');  // ✅ Always send a response
+        return res.redirect('/login'); // ✅ return added to ensure response
     });
 });
 
