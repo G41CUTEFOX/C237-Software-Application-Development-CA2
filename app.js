@@ -96,9 +96,14 @@ const validateRegistration = (req, res, next) => {
 };
 
 // Define routes
-app.get('/',  (req, res) => {
-    res.render('index', {user: req.session.user} );
+app.get('/register', (req, res) => {
+    console.log("Rendering register page");
+    res.render('register', {
+        messages: req.flash('error'),
+        formData: req.flash('formData')[0] || {}
+    });
 });
+
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
