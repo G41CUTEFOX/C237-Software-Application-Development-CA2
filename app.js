@@ -22,13 +22,9 @@ const pool = mysql.createPool({
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
     database: 'C237Team39_identitydo',
-<<<<<<< HEAD
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
-=======
-    port:'61002'
->>>>>>> 4c80bbb1bc2f62eb39f3a4c7a323a42d2c7c3b81
 });
 
 pool.query('SELECT * FROM products', (err, results) => {
