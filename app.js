@@ -17,21 +17,29 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: 'mfk1th.h.filess.io',
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
-    database: 'C237Team39_identitydo'
+    database: 'C237Team39_identitydo',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
+pool.query('SELECT * FROM products', (err, results) => {
+   // your logic here
+});
 
-connection.connect((err) => {
+pool.getConnection((err, connection) => {
     if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
+        console.error('Database connection failed:', err);
+    } else {
+        console.log('Connected to MySQL using pool');
+        connection.release();
     }
-    console.log('Connected to MySQL database');
 });
+
 
 // Set up view engine
 app.set('view engine', 'ejs');
