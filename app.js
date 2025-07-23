@@ -114,19 +114,23 @@ app.post('/register', validateRegistration, (req, res) => {
 
     console.log("Registering user:", { username, email, address, contact, role });
 
-    const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
+    const sql = `INSERT INTO users (username, email, password, address, contact, role)
+                 VALUES (?, ?, SHA1(?), ?, ?, ?)`;
+
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
-            console.error('Registration error:', err.message);
-            req.flash('error', 'Registration failed. Email might already be taken.');
+            console.error('Registration error:', err);  // full error
+            req.flash('error', 'Registration failed: ' + err.sqlMessage);
             req.flash('formData', req.body);
             return res.redirect('/register');
         }
 
+        console.log("User inserted with ID:", result.insertId);
         req.flash('success', 'Registration successful! Please log in.');
         res.redirect('/login');
     });
 });
+
 
 
 
