@@ -75,9 +75,27 @@ const checkAdmin = (req, res, next) => {
 };
 
 
-
-// Define routes
-
+// Middleware for form validation
+console.log('BODY:', req.body);
+ 
+const validateRegistration = (req, res, next) => {
+    const { username, email, password, address, contact, role } = req.body;
+ 
+    if (!username || !email || !password || !address || !contact || !role) {
+        req.flash('error', 'All fields are required.');
+        req.flash('formData', req.body);
+        return res.redirect('/register');
+    }
+ 
+    if (password.length < 6) {
+        req.flash('error', 'Password must be at least 6 characters.');
+        req.flash('formData', req.body);
+        return res.redirect('/register');
+    }
+ 
+    next();
+};
+ 
 
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
