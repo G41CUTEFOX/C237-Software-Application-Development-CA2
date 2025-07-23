@@ -110,6 +110,8 @@ app.get('/register', (req, res) => {
 app.post('/register', validateRegistration, (req, res) => {
     const { username, email, password, address, contact, role } = req.body;
 
+    console.log("Registering user:", { username, email, address, contact, role });
+
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
@@ -123,6 +125,7 @@ app.post('/register', validateRegistration, (req, res) => {
         res.redirect('/login');
     });
 });
+
 
 
 app.get('/login', (req, res) => {
@@ -316,6 +319,12 @@ app.get('/deleteProduct/:id', (req, res) => {
             res.redirect('/inventory');
         }
     });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err.stack);
+    res.status(500).send('Something broke!');
 });
 
 const PORT = process.env.PORT || 3000;
