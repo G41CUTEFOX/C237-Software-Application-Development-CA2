@@ -110,19 +110,26 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', validateRegistration, (req, res) => {
- 
     const { username, email, password, address, contact, role } = req.body;
- 
+
+    console.log('Register data:', req.body); // Check if body has values
+
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
+    
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
-            throw err;
+            console.error('Registration error:', err);  // ✅ Log the actual SQL error
+            req.flash('error', 'Registration failed. Please try again.');
+            req.flash('formData', req.body);
+            return res.redirect('/register'); // ✅ Ensure response is returned
         }
-        console.log(result);
+
+        console.log('User inserted:', result);
         req.flash('success', 'Registration successful! Please log in.');
-        res.redirect('/login');
+        res.redirect('/login');  // ✅ Always send a response
     });
 });
+
 
 app.get('/login', (req, res) => {
     res.render('login', { messages: req.flash('success'), errors: req.flash('error') });
