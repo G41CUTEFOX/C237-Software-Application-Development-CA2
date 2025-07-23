@@ -74,26 +74,7 @@ const checkAdmin = (req, res, next) => {
     }
 };
 
-// Middleware for form validation
-console.log('BODY:', req.body);
 
-const validateRegistration = (req, res, next) => {
-    const { username, email, password, address, contact, role } = req.body;
-
-    if (!username || !email || !password || !address || !contact || !role) {
-        req.flash('error', 'All fields are required.');
-        req.flash('formData', req.body);
-        return res.redirect('/register'); 
-    }
-
-    if (password.length < 6) {
-        req.flash('error', 'Password must be at least 6 characters.');
-        req.flash('formData', req.body);
-        return res.redirect('/register');
-    }
-
-    next(); 
-};
 
 // Define routes
 
@@ -114,7 +95,7 @@ app.get('/register', (req, res) => {
 app.post('/register', validateRegistration, (req, res) => {
     const { username, email, password, address, contact, role } = req.body;
 
-    console.log('Register data:', req.body); // Confirm form submission
+    console.log('Register data:', req.body); 
 
     if (!username || !email || !password || !address || !contact || !role) {
         req.flash('error', 'All fields are required.');
@@ -129,12 +110,12 @@ app.post('/register', validateRegistration, (req, res) => {
             console.error('Registration error:', err);
             req.flash('error', 'Registration failed. Please try again.');
             req.flash('formData', req.body);
-            return res.redirect('/register'); // ✅ return added to avoid hang
+            return res.redirect('/register'); 
         }
 
         console.log('User inserted:', result);
         req.flash('success', 'Registration successful! Please log in.');
-        return res.redirect('/login'); // ✅ return added to ensure response
+        return res.redirect('/login'); 
     });
 });
 
