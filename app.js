@@ -83,7 +83,10 @@ const checkAdmin = (req, res, next) => {
 
 
 // Middleware for form validation
-console.log('BODY:', req.body);
+app.post('/register', (req, res) => {
+  console.log('BODY:', req.body);
+});
+
  
 const validateRegistration = (req, res, next) => {
     const { username, email, password, address, contact, role } = req.body;
