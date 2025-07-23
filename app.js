@@ -17,29 +17,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const pool = mysql.createPool({
+const connection = mysql.createConnection({
     host: 'mfk1th.h.filess.io',
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
-    database: 'C237Team39_identitydo',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    database: 'C237Team39_identitydo'
 });
 
-pool.query('SELECT * FROM products', (err, results) => {
-   // your logic here
-});
 
-pool.getConnection((err, connection) => {
+connection.connect((err) => {
     if (err) {
-        console.error('Database connection failed:', err);
-    } else {
-        console.log('Connected to MySQL using pool');
-        connection.release();
+        console.error('Error connecting to MySQL:', err);
+        return;
     }
+    console.log('Connected to MySQL database');
 });
-
 
 // Set up view engine
 app.set('view engine', 'ejs');
@@ -81,32 +73,26 @@ const checkAdmin = (req, res, next) => {
     }
 };
 
-
 // Middleware for form validation
-app.post('/register', (req, res) => {
-  console.log('BODY:', req.body);
-});
-
- 
 const validateRegistration = (req, res, next) => {
     const { username, email, password, address, contact, role } = req.body;
- 
+
     if (!username || !email || !password || !address || !contact || !role) {
-        req.flash('error', 'All fields are required.');
-        req.flash('formData', req.body);
-        return res.redirect('/register');
+        return res.status(400).send('All fields are required.');
     }
- 
+    
     if (password.length < 6) {
-        req.flash('error', 'Password must be at least 6 characters.');
+        req.flash('error', 'Password should be at least 6 or more characters long');
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
- 
     next();
 };
- 
 
+// Define routes
+app.get('/',  (req, res) => {
+    res.render('index', {user: req.session.user} );
+});
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
@@ -121,32 +107,19 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', validateRegistration, (req, res) => {
+
     const { username, email, password, address, contact, role } = req.body;
 
-    console.log('Register data:', req.body); 
-
-    if (!username || !email || !password || !address || !contact || !role) {
-        req.flash('error', 'All fields are required.');
-        req.flash('formData', req.body);
-        return res.redirect('/register');
-    }
-
     const sql = 'INSERT INTO users (username, email, password, address, contact, role) VALUES (?, ?, SHA1(?), ?, ?, ?)';
-    
     connection.query(sql, [username, email, password, address, contact, role], (err, result) => {
         if (err) {
-            console.error('Registration error:', err);
-            req.flash('error', 'Registration failed. Please try again.');
-            req.flash('formData', req.body);
-            return res.redirect('/register'); 
+            throw err;
         }
-
-        console.log('User inserted:', result);
+        console.log(result);
         req.flash('success', 'Registration successful! Please log in.');
-        return res.redirect('/login'); 
+        res.redirect('/login');
     });
 });
-
 
 app.get('/login', (req, res) => {
     res.render('login', { messages: req.flash('success'), errors: req.flash('error') });
@@ -339,12 +312,6 @@ app.get('/deleteProduct/:id', (req, res) => {
             res.redirect('/inventory');
         }
     });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err.stack);
-    res.status(500).send('Something broke!');
 });
 
 const PORT = process.env.PORT || 3000;
