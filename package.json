@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.2"
+  },
+  "name": "c237-software-application-development-ca2",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/G41CUTEFOX/C237-Software-Application-Development--CA2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/G41CUTEFOX/C237-Software-Application-Development--CA2/issues"
+  },
+  "homepage": "https://github.com/G41CUTEFOX/C237-Software-Application-Development--CA2#readme",
+  "description": ""
+}
