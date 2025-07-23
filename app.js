@@ -1,3 +1,5 @@
+const express = require('express');
+const mysql = require('mysql2');
 const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
@@ -314,5 +316,4 @@ app.get('/deleteProduct/:id', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
-const express = require('express');
-const mysql = require('mysql2');
+
