@@ -66,13 +66,22 @@ const checkAuthenticated = (req, res, next) => {
 
 // Middleware to check if user is admin
 const checkAdmin = (req, res, next) => {
-    if (req.session.user.role === 'admin') {
+    if (req.session.user && req.session.user.role === 'admin') {
         return next();
     } else {
         req.flash('error', 'Access denied');
         res.redirect('/shopping');
     }
 };
+
+// const checkAdmin = (req, res, next) => {
+//     if (req.session.user.role === 'admin') {
+//         return next();
+//     } else {
+//         req.flash('error', 'Access denied');
+//         res.redirect('/shopping');
+//     }
+// };
 
 // Middleware for form validation
 const validateRegistration = (req, res, next) => {
