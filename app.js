@@ -287,7 +287,7 @@ app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
         image = req.file.filename; // set image to be new image filename
     } 
 
-    const sql = 'UPDATE products SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE productId = ?';
+    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE productId = ?';
     // Insert the new product into the database
     connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
         if (error) {
