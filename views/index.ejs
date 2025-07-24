@@ -49,7 +49,13 @@
             Please <a href = "/login" >login</a> to continue...
             <% } %>
         </p>
-        
+
+        <% if (user && user.role === 'user') { %>
+         <form method="GET" action="/shopping" class="d-flex justify-content-center my-4">
+          <input type="text" name="search" class="form-control w-50 me-2" placeholder="Search perfumes...">
+          <button type="submit" class="btn btn-outline-primary">Search</button>
+         </form>
+        <% } %>
     </div>
 </body>
 </html>

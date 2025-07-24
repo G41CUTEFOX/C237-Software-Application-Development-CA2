@@ -313,6 +313,16 @@ app.post('/deleteProduct/:id', checkAuthenticated, checkAdmin, (req, res) => {
   });
 });
 
+app.get('/dashboard', checkAuthenticated, (req, res) => {
+    const search = req.query.search || '';
+    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
+    const searchTerm = '%' + search + '%';
+
+    connection.query(query, [searchTerm], (error, results) => {
+        if (error) throw error;
+        res.render('dashboard', { user: req.session.user, products: results, search });
+    });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
