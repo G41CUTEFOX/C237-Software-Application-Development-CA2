@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const mysql = require('mysql2');
 
 const pool = mysql.createPool({
     host: 'mfk1th.h.filess.io',
