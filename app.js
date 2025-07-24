@@ -30,12 +30,12 @@ const pool = mysql.createPool({
 });
 
 pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error connecting to MySQL pool:', err);
-        return;
-    }
-    console.log('Connected to MySQL via pool');
-    connection.release(); // important: release it back to pool
+  if (err) throw err;
+  connection.query('SELECT * FROM products', (err, results) => {
+    connection.release();  // VERY IMPORTANT
+    if (err) throw err;
+    console.log(results);
+  });
 });
 
 module.exports = pool;
