@@ -169,11 +169,11 @@ app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
     const fragranceId = parseInt(req.params.id);
     const quantity = parseInt(req.body.quantity) || 1;
 
-    connection.query('SELECT * FROM products WHERE fragranceId = ?', [fragranceId], (error, results) => {
+    connection.query('SELECT * FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
         if (error) throw error;
 
         if (results.length > 0) {
-            const product = results[0];
+            const fragrance = results[0];
 
             // Initialize cart in session if not exists
             if (!req.session.cart) {
