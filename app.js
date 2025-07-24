@@ -161,12 +161,12 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
     // Fetch data from MySQL
     connection.query('SELECT * FROM fragrances', (error, results) => {
         if (error) throw error;
-        res.render('shopping', { user: req.session.user, products: results });
+        res.render('shopping', { user: req.session.user, fragrances: results });
       });
 });
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
-    const productId = parseInt(req.params.id);
+    const fragranceId = parseInt(req.params.id);
     const quantity = parseInt(req.body.quantity) || 1;
 
     connection.query('SELECT * FROM products WHERE fragranceId = ?', [fragranceId], (error, results) => {
