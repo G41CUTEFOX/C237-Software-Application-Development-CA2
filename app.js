@@ -230,11 +230,11 @@ app.get('/product/:id', checkAuthenticated, (req, res) => {
   });
 });
 
-app.get('/addProduct', checkAuthenticated, checkAdmin, (req, res) => {
-    res.render('addProduct', {user: req.session.user } ); 
+app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
+    res.render('addFragrance', {user: req.session.user } ); 
 });
 
-app.post('/addProduct', upload.single('image'),  (req, res) => {
+app.post('/addFragrance', upload.single('image'),  (req, res) => {
     // Extract product data from the request body
     const { name, quantity, price} = req.body;
     let image;
