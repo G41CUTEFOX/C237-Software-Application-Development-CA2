@@ -190,7 +190,7 @@ app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
                     fragranceName: fragrance.fragranceName,
                     price: fragrance.price,
                     quantity: fragrance.quantity,
-                    description: fragrance,
+                    description: fragrance.description,
                     image: fragrance.image
                 });
             }
