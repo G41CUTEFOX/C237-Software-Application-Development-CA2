@@ -17,22 +17,29 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const connection = mysql.createConnection({
+const mysql = require('mysql2');
+
+const pool = mysql.createPool({
     host: 'mfk1th.h.filess.io',
     user: 'C237Team39_identitydo',
     password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
     database: 'C237Team39_identitydo',
-    port: '61002'
+    port: 61002,
+    waitForConnections: true,
+    connectionLimit: 10,  // You can increase if needed
+    queueLimit: 0         // 0 = unlimited queued requests
 });
 
-
-connection.connect((err) => {
+pool.getConnection((err, connection) => {
     if (err) {
-        console.error('Error connecting to MySQL:', err);
+        console.error('Error connecting to MySQL pool:', err);
         return;
     }
-    console.log('Connected to MySQL database');
+    console.log('Connected to MySQL via pool');
+    connection.release(); // important: release it back to pool
 });
+
+module.exports = pool;
 
 // Set up view engine
 app.set('view engine', 'ejs');
