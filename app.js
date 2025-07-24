@@ -232,19 +232,17 @@ app.get('/fragrance/:id', checkAuthenticated, (req, res) => {
 });
 
 app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
-<<<<<<< HEAD
     res.render('addFragrance', {user: req.session.user } ); 
 });
 
 app.post('/addFragrance', upload.single('image'),  (req, res) => {
     // Extract product data from the request body
-=======
+
     res.render('addFrangarce', {user: req.session.user } ); 
 });
 
 app.post('/addfragrance', upload.single('image'),  (req, res) => {
     // Extract fragrance data from the request body
->>>>>>> 79af72adbc0e02b83a3083973b8622843b37d124
     const { name, quantity, price} = req.body;
     let image;
     if (req.file) {
