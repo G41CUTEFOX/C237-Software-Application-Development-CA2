@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/addProduct">Add Product</a>
+              <a class="nav-link" href="/addFragrance">Add Fragrance</a>
             </li> 
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
@@ -30,13 +30,13 @@
   <div class="container">
     <p>Welcome, <%= user.username %> (<%= user.role %>)</p>
     <br>
-    <div class="text-center"><h2>Products from Supermarket App Database</h2></div>
+    <div class="text-center"><h2>Fragrances from Explorer Sauvage Database</h2></div>
     <br>
     <table class="table table-hover small text-center">
       <thead>
           <tr>
-            <th width="100">Product Name</th>
-            <th width="100">Product Image</th>
+            <th width="100">Fragrance Name</th>
+            <th width="100">Fragrance Image</th>
             <th width="50">Quantity</th>
             <th width="50">Price</th>
             <th width="50">Edit</th>
@@ -44,16 +44,16 @@
           </tr>
       </thead>
       <tbody>
-        <% for(let i=0; i < products.length; i++) { %>
+        <% for(let i=0; i < fragrances.length; i++) { %>
           <tr>
-            <td><a href="/product/<%= products[i].productId %>" ><%= products[i].productName %></a></td>
-            <td><img src = "images/<%= products[i].image %>" width="20%"></td>
-            <td><%= products[i].quantity %></td>
-            <td>$<%= products[i].price.toFixed(2) %></td>
+            <td><a href="/fragrance/<%= fragrances[i].fragranceId %>" ><%= fragrances[i].fragranceName %></a></td>
+            <td><img src = "images/<%= fragrances[i].image %>" width="20%"></td>
+            <td><%= fragrances[i].quantity %></td>
+            <td>$<%= fragrances[i].price.toFixed(2) %></td>
             <!-- Edit Link -->
-            <td><a href="/updateProduct/<%= products[i].productId %>">Edit</a></td>
+            <td><a href="/updateFragrance/<%= fragrances[i].fragranceId %>">Edit</a></td>
             <!-- Delete Link -->
-            <td><a href="/deleteProduct/<%= products[i].productId %>" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a></td>
+            <td><a href="/deleteFragrance/<%= fragrances[i].fragranceId %>" onclick="return confirm('Are you sure you want to delete this Fragrance?')">Delete</a></td>
           </tr>
         <% } %>
       </tbody>
