@@ -97,9 +97,9 @@ app.get('/',  (req, res) => {
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
-    connection.query('SELECT * FROM products', (error, results) => {
+    connection.query('SELECT * FROM fragrances', (error, results) => {
       if (error) throw error;
-      res.render('inventory', { products: results, user: req.session.user });
+      res.render('inventory', { fragrances: results, user: req.session.user });
     });
 });
 
@@ -159,44 +159,45 @@ app.post('/login', (req, res) => {
 
 app.get('/shopping', checkAuthenticated, (req, res) => {
     // Fetch data from MySQL
-    connection.query('SELECT * FROM products', (error, results) => {
+    connection.query('SELECT * FROM fragrances', (error, results) => {
         if (error) throw error;
-        res.render('shopping', { user: req.session.user, products: results });
+        res.render('shopping', { user: req.session.user, fragrances: results });
       });
 });
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
-    const productId = parseInt(req.params.id);
+    const fragranceId = parseInt(req.params.id);
     const quantity = parseInt(req.body.quantity) || 1;
 
-    connection.query('SELECT * FROM products WHERE productId = ?', [productId], (error, results) => {
+    connection.query('SELECT * FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
         if (error) throw error;
 
         if (results.length > 0) {
-            const product = results[0];
+            const fragrance = results[0];
 
             // Initialize cart in session if not exists
             if (!req.session.cart) {
                 req.session.cart = [];
             }
 
-            // Check if product already in cart
-            const existingItem = req.session.cart.find(item => item.productId === productId);
+            // Check if fragrance already in cart
+            const existingItem = req.session.cart.find(item => item.fragranceId === fragranceId);
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
                 req.session.cart.push({
-                    productId: product.productId,
-                    productName: product.productName,
-                    price: product.price,
-                    quantity: quantity,
-                    image: product.image
+                    fragranceId: fragrance.fragranceId,
+                    fragranceName: fragrance.fragranceName,
+                    price: fragrance.price,
+                    quantity: fragrance.quantity,
+                    description: fragrance.description,
+                    image: fragrance.image
                 });
             }
 
             res.redirect('/cart');
         } else {
-            res.status(404).send("Product not found");
+            res.status(404).send("Fragrance not found");
         }
     });
 });
@@ -211,31 +212,39 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/product/:id', checkAuthenticated, (req, res) => {
-  // Extract the product ID from the request parameters
-  const productId = req.params.id;
+app.get('/fragrance/:id', checkAuthenticated, (req, res) => {
+  // Extract the fragrance ID from the request parameters
+  const fragranceId = req.params.id;
 
-  // Fetch data from MySQL based on the product ID
-  connection.query('SELECT * FROM products WHERE productId = ?', [productId], (error, results) => {
+  // Fetch data from MySQL based on the fragrance ID
+  connection.query('SELECT * FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
       if (error) throw error;
 
-      // Check if any product with the given ID was found
+      // Check if any fragrance with the given ID was found
       if (results.length > 0) {
-          // Render HTML page with the product data
-          res.render('product', { product: results[0], user: req.session.user  });
+          // Render HTML page with the fragrance data
+          res.render('fragrance', { fragrance: results[0], user: req.session.user  });
       } else {
-          // If no product with the given ID was found, render a 404 page or handle it accordingly
-          res.status(404).send('Product not found');
+          // If no fragrance with the given ID was found, render a 404 page or handle it accordingly
+          res.status(404).send('Fragrance not found');
       }
   });
 });
 
 app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
+<<<<<<< HEAD
     res.render('addFragrance', {user: req.session.user } ); 
 });
 
 app.post('/addFragrance', upload.single('image'),  (req, res) => {
     // Extract product data from the request body
+=======
+    res.render('addFrangarce', {user: req.session.user } ); 
+});
+
+app.post('/addfragrance', upload.single('image'),  (req, res) => {
+    // Extract fragrance data from the request body
+>>>>>>> 79af72adbc0e02b83a3083973b8622843b37d124
     const { name, quantity, price} = req.body;
     let image;
     if (req.file) {
@@ -244,13 +253,13 @@ app.post('/addFragrance', upload.single('image'),  (req, res) => {
         image = null;
     }
 
-    const sql = 'INSERT INTO products (productName, quantity, price, image) VALUES (?, ?, ?, ?)';
-    // Insert the new product into the database
-    connection.query(sql , [name, quantity, price, image], (error, results) => {
+    const sql = 'INSERT INTO fragrances (fragranceName, quantity, price, description, image) VALUES (?, ?, ?, ?, ?)';
+    // Insert the new fragrance into the database
+    connection.query(sql , [name, quantity, price, description, image], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
-            console.error("Error adding product:", error);
-            res.status(500).send('Error adding product');
+            console.error("Error adding fragrance:", error);
+            res.status(500).send('Error adding fragrance');
         } else {
             // Send a success response
             res.redirect('/inventory');
@@ -258,41 +267,41 @@ app.post('/addFragrance', upload.single('image'),  (req, res) => {
     });
 });
 
-app.get('/updateProduct/:id',checkAuthenticated, checkAdmin, (req,res) => {
+app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
     const productId = req.params.id;
-    const sql = 'SELECT * FROM products WHERE productId = ?';
+    const sql = 'SELECT * FROM fragrances WHERE fragranceId = ?';
 
-    // Fetch data from MySQL based on the product ID
-    connection.query(sql , [productId], (error, results) => {
+    // Fetch data from MySQL based on the fragrance ID
+    connection.query(sql , [fragranceId], (error, results) => {
         if (error) throw error;
 
-        // Check if any product with the given ID was found
+        // Check if any fragrance with the given ID was found
         if (results.length > 0) {
             // Render HTML page with the product data
-            res.render('updateProduct', { product: results[0] });
+            res.render('updateFragrance', { fragrance: results[0] });
         } else {
-            // If no product with the given ID was found, render a 404 page or handle it accordingly
-            res.status(404).send('Product not found');
+            // If no fragrance with the given ID was found, render a 404 page or handle it accordingly
+            res.status(404).send('Fragrance not found');
         }
     });
 });
 
-app.post('/updateProduct/:id', upload.single('image'), (req, res) => {
-    const productId = req.params.id;
-    // Extract product data from the request body
-    const { name, quantity, price } = req.body;
+app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
+    const fragranceId = req.params.id;
+    // Extract fragrance data from the request body
+    const { name, quantity, price, description } = req.body;
     let image  = req.body.currentImage; //retrieve current image filename
     if (req.file) { //if new image is uploaded
         image = req.file.filename; // set image to be new image filename
     } 
 
-    const sql = 'UPDATE products SET productName = ? , quantity = ?, price = ?, image =? WHERE productId = ?';
+    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE productId = ?';
     // Insert the new product into the database
-    connection.query(sql, [name, quantity, price, image, productId], (error, results) => {
+    connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
-            console.error("Error updating product:", error);
-            res.status(500).send('Error updating product');
+            console.error("Error updating fragrance:", error);
+            res.status(500).send('Error updating fragrance');
         } else {
             // Send a success response
             res.redirect('/inventory');
@@ -300,18 +309,26 @@ app.post('/updateProduct/:id', upload.single('image'), (req, res) => {
     });
 });
 
-app.get('/deleteProduct/:id', (req, res) => {
-    const productId = req.params.id;
+app.post('/deleteFragrance/:id', checkAuthenticated, checkAdmin, (req, res) => {
+  const fragranceId = req.params.id;
+  connection.query('DELETE FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
+    if (error) {
+      console.error("Error deleting fragrance:", error);
+      res.status(500).send('Error deleting fragrance');
+    } else {
+      res.redirect('/inventory');
+    }
+  });
+});
 
-    connection.query('DELETE FROM products WHERE productId = ?', [productId], (error, results) => {
-        if (error) {
-            // Handle any error that occurs during the database operation
-            console.error("Error deleting product:", error);
-            res.status(500).send('Error deleting product');
-        } else {
-            // Send a success response
-            res.redirect('/inventory');
-        }
+app.get('/dashboard', checkAuthenticated, (req, res) => {
+    const search = req.query.search || '';
+    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
+    const searchTerm = '%' + search + '%';
+
+    connection.query(query, [searchTerm], (error, results) => {
+        if (error) throw error;
+        res.render('dashboard', { user: req.session.user, fragrances: results, search });
     });
 });
 
