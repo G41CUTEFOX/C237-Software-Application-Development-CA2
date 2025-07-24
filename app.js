@@ -25,7 +25,7 @@ const pool = mysql.createPool({
     database: 'C237Team39_identitydo',
     port: 61002,
     waitForConnections: true,
-    connectionLimit: 10,  // You can increase if needed
+    connectionLimit: 5,  // You can increase if needed
     queueLimit: 0         // 0 = unlimited queued requests
 });
 
