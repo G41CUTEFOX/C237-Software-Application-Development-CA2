@@ -252,14 +252,8 @@ app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
 });
 
 app.post('/addFragrance', upload.single('image'),  (req, res) => {
-    // Extract product data from the request body
-
-    res.render('addFrangarce', {user: req.session.user } ); 
-});
-
-app.post('/addfragrance', upload.single('image'),  (req, res) => {
     // Extract fragrance data from the request body
-    const { name, quantity, price} = req.body;
+    const { name, quantity, price, description } = req.body;
     let image;
     if (req.file) {
         image = req.file.filename; // Save only the filename
