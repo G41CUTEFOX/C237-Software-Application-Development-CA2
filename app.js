@@ -4,15 +4,19 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
 const app = express();
+const path = require('path');
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/images'); // Directory to save uploaded files
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname); 
-    }
+  destination: (req, file, cb) => {
+    cb(null, 'public/images'); // Make sure this folder exists
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext).replace(/\s+/g, '_');
+    const unique = Date.now() + '_' + base + ext;
+    cb(null, unique);
+  }
 });
 
 const upload = multer({ storage: storage });
