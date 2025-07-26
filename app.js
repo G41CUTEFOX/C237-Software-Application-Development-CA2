@@ -38,6 +38,9 @@ pool.getConnection((err, connection) => {
   });
 });
 
+// This makes `connection.query()` work in the rest of your file
+const connection = pool;
+
 module.exports = pool;
 
 // Set up view engine
