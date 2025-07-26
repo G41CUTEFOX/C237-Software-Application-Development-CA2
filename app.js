@@ -29,17 +29,16 @@ const pool = mysql.createPool({
     database: 'C237Team39_identitydo',
     port: 61002,
     waitForConnections: true,
-    connectionLimit: 5,  // You can increase if needed
+    connectionLimit: 10,  // You can increase if needed
     queueLimit: 0         // 0 = unlimited queued requests
 });
 
-pool.getConnection((err, connection) => {
-  if (err) throw err;
-  connection.query('SELECT * FROM fragrances', (err, results) => {
-    connection.release();  // VERY IMPORTANT
-    if (err) throw err;
-    console.log(results);
-  });
+pool.query('SELECT * FROM fragrances', (err, results) => {
+  if (err) {
+    console.error('Query error:', err);
+    return;
+  }
+  console.log(results);
 });
 
 // This makes `connection.query()` work in the rest of your file
