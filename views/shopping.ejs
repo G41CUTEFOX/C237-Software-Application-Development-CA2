@@ -8,79 +8,91 @@
   <title>Explorer Sauvage</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Explorer Sauvage</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="/cart">View Cart</a>
-            </li> 
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Logout</a>
-            </li> 
-          </ul>
-        </div>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Explorer Sauvage</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/cart">View Cart</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li> 
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-  <div class="container">
+  <div class="container mt-4">
     <p>Welcome, <%= user.username %> (<%= user.role %>)</p>
-    <br>
+
+    <!-- Search Form -->
+    <form method="GET" action="/shopping" class="d-flex justify-content-center my-4">
+      <input 
+        type="text" 
+        name="search" 
+        class="form-control w-50 me-2" 
+        placeholder="Search perfumes..." 
+        value="<%= search || '' %>"
+      >
+      <button type="submit" class="btn btn-outline-primary">Search</button>
+    </form>
+
     <div class="text-center"><h2>Fragrances from Explorer Sauvage</h2></div>
     <br>
-    <table class="table table-hover small text-center">
-      <thead>
-          <tr>
-            <th width="100">Fragrance Name</th>
-            <th width="100">Fragrance Image</th>
-            <th width="100">Fragrance Description</th>
-            <th width="50">Quantity</th>
-            <th width="50">Price</th>
-            <th width="50">Quantity</th>
-            <th width="50">Buy</th>
-          </tr>
-      </thead>
-      <tbody>
-        <% for(let i=0; i < fragrances.length; i++) { %>
-          <tr>
-            <td><a href="/fragrances/<%= fragrances[i].fragranceId %>" ><%= fragrances[i].fragranceName %></a></td>
-            <td><img src = "images/<%= fragrances[i].image %>" width="20%"></td>
-            <td><%= fragrances[i].quantity %></td>
-            <td>$<%= fragrances[i].price.toFixed(2) %></td>
-            <!-- <td>
-              <select id="role" name="role" class="form-control" >
-                <option value="1" selected >1</option>
-                <option value="2" >2</option>
-                <option value="3" >3</option>
-                <option value="4" >4</option>
-                <option value="5" >5</option>
-              </select>
-            </td> -->
-            <!-- Buy Link -->
-            <!-- <td><a href="/buyfragrance/<%#= fragrances[i].fragranceId %>" class="btn btn-primary mt-3">Buy</a></td> -->
-            <td>
-              <select class="form-control" onchange="document.getElementById('quantity-<%= fragrances[i].fragranceId %>').value = this.value">
-                <% for (let q = 1; q <= 5; q++) { %>
-                  <option value="<%= q %>"><%= q %></option>
-                <% } %>
-              </select>
-            </td>
 
-            <td>
-                <form action="/add-to-cart/<%= fragrances[i].fragranceId %>" method="POST">
-                  <input type="hidden" name="quantity" id="quantity-<%= fragrances[i].fragranceId %>" value="1">
-                  <button type="submit" class="btn btn-primary mt-3">Buy</button>
+    <!-- Fragrance Table or No Results Message -->
+    <% if (fragrances && fragrances.length > 0) { %>
+      <table class="table table-hover small text-center">
+        <thead>
+          <tr>
+            <th>Fragrance Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Select Quantity</th>
+            <th>Buy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% fragrances.forEach(frag => { %>
+            <tr>
+              <td>
+                <a href="/fragrances/<%= frag.fragranceId %>">
+                  <%= frag.fragranceName %>
+                </a>
+              </td>
+              <td><img src="/images/<%= frag.image %>" width="100"></td>
+              <td><%= frag.description %></td>
+              <td><%= frag.quantity %></td>
+              <td>$<%= frag.price.toFixed(2) %></td>
+              <td>
+                <select class="form-control" onchange="document.getElementById('qty-<%= frag.fragranceId %>').value = this.value">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <option value="<%= i %>"><%= i %></option>
+                  <% } %>
+                </select>
+              </td>
+              <td>
+                <form action="/add-to-cart/<%= frag.fragranceId %>" method="POST">
+                  <input type="hidden" name="quantity" id="qty-<%= frag.fragranceId %>" value="1">
+                  <button type="submit" class="btn btn-primary">Buy</button>
                 </form>
-            </td>
-
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="text-center mt-5">
+        <p>No fragrances found.</p>
+      </div>
+    <% } %>
   </div>
 </body>
 </html>

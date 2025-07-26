@@ -167,11 +167,18 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/shopping', checkAuthenticated, (req, res) => {
-    // Fetch data from MySQL
-    connection.query('SELECT * FROM fragrances', (error, results) => {
+    const search = req.query.search || '';
+    const searchTerm = '%' + search + '%';
+    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
+
+    connection.query(query, [searchTerm], (error, results) => {
         if (error) throw error;
-        res.render('shopping', { user: req.session.user, fragrances: results });
-      });
+        res.render('shopping', {
+            user: req.session.user,
+            fragrances: results,
+            search: search
+        });
+    });
 });
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
