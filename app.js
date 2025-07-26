@@ -31,7 +31,7 @@ const pool = mysql.createPool({
 
 pool.getConnection((err, connection) => {
   if (err) throw err;
-  connection.query('SELECT * FROM products', (err, results) => {
+  connection.query('SELECT * FROM fragrances', (err, results) => {
     connection.release();  // VERY IMPORTANT
     if (err) throw err;
     console.log(results);
