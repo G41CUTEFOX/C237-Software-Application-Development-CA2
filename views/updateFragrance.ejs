@@ -44,8 +44,8 @@
         </div>
 
         <div class="mb-3">
-          <label for="name" class="form-label">Fragrance Description</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= fragrance.description %>" required>
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" value="<%= fragrance.price %>" required>
         </div>
 
         <div class="mb-3">
@@ -56,11 +56,6 @@
         <div class="mb-3">
           <label for="description" class="form-label">Description</label>
           <input type="text" class="form-control" id="description" name="description" value="<%= fragrance.fragranceDescription %>" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="price" class="form-label">Price</label>
-          <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" value="<%= fragrance.price %>" required>
         </div>
 
         <div class="mb-3">
