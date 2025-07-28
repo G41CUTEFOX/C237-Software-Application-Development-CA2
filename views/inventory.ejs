@@ -47,7 +47,7 @@
         <% for(let i=0; i < fragrances.length; i++) { %>
           <tr>
             <td><a href="/fragrance/<%= fragrances[i].fragranceId %>" ><%= fragrances[i].fragranceName %></a></td>
-            <td> src="images/<%= fragrances[i].image || 'default.jpg' %>" width="20%"></td>
+            <td><img src="images/<%= fragrances[i].image || 'default.jpg' %>" width="20%"></td>
             <td><%= fragrances[i].quantity %></td>
             <td>$<%= isNaN(Number(fragrances[i].price)) ? '0.00' : Number(fragrances[i].price).toFixed(2) %></td>
             <!-- Edit Link -->
