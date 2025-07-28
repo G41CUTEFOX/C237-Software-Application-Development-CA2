@@ -269,9 +269,9 @@ app.post('/addFragrance', upload.single('image'),  (req, res) => {
         image = null;
     }
 
-    const sql = 'INSERT INTO fragrances (fragranceName, quantity, price, description, image) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO fragrances (fragranceName, price, quantity, description, image) VALUES (?, ?, ?, ?, ?)';
     // Insert the new fragrance into the database
-    connection.query(sql , [name, quantity, price, description, image], (error, results) => {
+    connection.query(sql , [fragranceName, price, quantity, description, image], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
             console.error("Error adding fragrance:", error);
@@ -311,9 +311,9 @@ app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
         image = req.file.filename; // set image to be new image filename
     } 
 
-    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE fragranceId = ?';
+    const sql = 'UPDATE fragrances SET fragranceName = ? , price = ?, quantity = ?, description = ?, image = ? WHERE fragranceId = ?';
     // Insert the new fragrance into the database
-    connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
+    connection.query(sql, [fragranceName, price, quantity, description, image, fragranceId], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
             console.error("Error updating fragrance:", error);
