@@ -1,3 +1,5 @@
+//This file is run to autocommit changes
+
 const { exec } = require('child_process');
 
 function runCommand(command) {
