@@ -279,7 +279,7 @@ app.post('/addFragrance', upload.single('image'),  (req, res) => {
 });
 
 app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
-    const productId = req.params.id;
+    const fragranceId = req.params.id;
     const sql = 'SELECT * FROM fragrances WHERE fragranceId = ?';
 
     // Fetch data from MySQL based on the fragrance ID
@@ -288,7 +288,7 @@ app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
 
         // Check if any fragrance with the given ID was found
         if (results.length > 0) {
-            // Render HTML page with the product data
+            // Render HTML page with the fragrance data
             res.render('updateFragrance', { fragrance: results[0] });
         } else {
             // If no fragrance with the given ID was found, render a 404 page or handle it accordingly
@@ -306,8 +306,8 @@ app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
         image = req.file.filename; // set image to be new image filename
     } 
 
-    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE productId = ?';
-    // Insert the new product into the database
+    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE fragranceId = ?';
+    // Insert the new fragrance into the database
     connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
