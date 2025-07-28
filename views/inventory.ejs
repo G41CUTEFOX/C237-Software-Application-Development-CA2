@@ -49,7 +49,7 @@
             <td><a href="/fragrance/<%= fragrances[i].fragranceId %>" ><%= fragrances[i].fragranceName %></a></td>
             <td> src="images/<%= fragrances[i].image || 'default.jpg' %>" width="20%"></td>
             <td><%= fragrances[i].quantity %></td>
-            <td>$<%= isNaN(Number(fragrances[i].price)) ? '0.00' : Number(fragrances[i].price).toFixed(2) %></td>
+            <td>$<%= fragrances[i].price ? fragrances[i].price.toFixed(2) : '0.00' %></td>
             <!-- Edit Link -->
             <td><a href="/updateFragrance/<%= fragrances[i].fragranceId %>">Edit</a></td>
             <!-- Delete Link -->
