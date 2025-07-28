@@ -343,5 +343,10 @@ app.get('/dashboard', checkAuthenticated, (req, res) => {
     });
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
