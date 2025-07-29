@@ -114,7 +114,8 @@ app.get('/',  (req, res) => {
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
-    connection.query('SELECT * FROM fragrances', (error, results) => {
+    connection.query('SELECT fragranceId, fragranceName, image, quantity, price FROM fragrances', (error, results) => {
+    //connection.query('SELECT * FROM fragrances', (error, results) => {
       if (error) throw error;
       res.render('inventory', { fragrances: results, user: req.session.user });
     });
