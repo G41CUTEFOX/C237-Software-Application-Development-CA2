@@ -79,7 +79,7 @@
               <td><%= frag.quantity %></td>
               <td>
                 <% if (frag.price != null) { %>
-                  $<%= frag.price.toFixed(2) %>
+                  $<%= Number(frag.price).toFixed(2) %>
                 <% } else { %>
                   N/A
                 <% } %>

@@ -192,13 +192,22 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
             return res.status(500).send("Error loading shopping page");
         }
 
-        res.render('shopping', {
-            user: req.session.user,
-            fragrances: results,
-            search: search
-        });
+        console.log("User session:", req.session.user);         // Debug
+        console.log("Fragrance results:", results);             // Debug
+
+        try {
+            res.render('shopping', {
+                user: req.session.user,
+                fragrances: results,
+                search: search
+            });
+        } catch (renderErr) {
+            console.error("Render error:", renderErr);          // Log rendering error
+            res.status(500).send("Error rendering shopping page");
+        }
     });
 });
+
 
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
