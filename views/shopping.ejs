@@ -8,6 +8,7 @@
   <title>Explorer Sauvage</title>
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Explorer Sauvage</a>
@@ -51,10 +52,10 @@
         <thead>
           <tr>
             <th>Fragrance Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Description</th>
             <th>Image</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Price</th>
             <th>Select Quantity</th>
             <th>Buy</th>
           </tr>
@@ -63,14 +64,26 @@
           <% fragrances.forEach(frag => { %>
             <tr>
               <td>
-                <a href="/fragrances/<%= frag.fragranceId %>">
+                <a href="/fragrance/<%= frag.fragranceId %>">
                   <%= frag.fragranceName %>
                 </a>
               </td>
-              <td><img src="/images/<%= frag.image %>" width="100"></td>
+              <td>
+                <% if (frag.image) { %>
+                  <img src="/images/<%= frag.image %>" width="100">
+                <% } else { %>
+                  <span>No image</span>
+                <% } %>
+              </td>
               <td><%= frag.description %></td>
               <td><%= frag.quantity %></td>
-              <td>$<%= frag.price.toFixed(2) %></td>
+              <td>
+                <% if (frag.price != null) { %>
+                  $<%= frag.price.toFixed(2) %>
+                <% } else { %>
+                  N/A
+                <% } %>
+              </td>
               <td>
                 <select class="form-control" onchange="document.getElementById('qty-<%= frag.fragranceId %>').value = this.value">
                   <% for (let i = 1; i <= 5; i++) { %>
