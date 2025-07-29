@@ -146,7 +146,6 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Validate email and password
     if (!email || !password) {
         req.flash('error', 'All fields are required.');
         return res.redirect('/login');
@@ -155,37 +154,29 @@ app.post('/login', (req, res) => {
     const sql = 'SELECT * FROM users WHERE email = ? AND password = SHA1(?)';
     connection.query(sql, [email, password], (err, results) => {
         if (err) {
-            throw err;
+            console.error("Login DB error:", err);
+            req.flash('error', 'Database error.');
+            return res.redirect('/login');
         }
 
         if (results.length > 0) {
-            // Successful login
-            req.session.user = results[0]; 
-            req.flash('success', 'Login successful!');
-            if(req.session.user.role == 'user')
-                res.redirect('/shopping');
-            else
-                res.redirect('/inventory');
+            req.session.user = results[0];
+
+            console.log("Login success:", results[0]);  // DEBUG LINE
+
+            // Redirect based on role
+            if (results[0].role === 'admin') {
+                return res.redirect('/inventory');
+            } else if (results[0].role === 'user') {
+                return res.redirect('/shopping');
+            } else {
+                req.flash('error', 'Unknown role.');
+                return res.redirect('/login');
+            }
         } else {
-            // Invalid credentials
             req.flash('error', 'Invalid email or password.');
-            res.redirect('/login');
+            return res.redirect('/login');
         }
-    });
-});
-
-app.get('/shopping', checkAuthenticated, (req, res) => {
-    const search = req.query.search || '';
-    const searchTerm = '%' + search + '%';
-    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
-
-    connection.query(query, [searchTerm], (error, results) => {
-        if (error) throw error;
-        res.render('shopping', {
-            user: req.session.user,
-            fragrances: results,
-            search: search
-        });
     });
 });
 
@@ -269,9 +260,9 @@ app.post('/addFragrance', upload.single('image'),  (req, res) => {
         image = null;
     }
 
-    const sql = 'INSERT INTO fragrances (fragranceName, price, quantity, description, image) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO fragrances (fragranceName, quantity, price, description, image) VALUES (?, ?, ?, ?, ?)';
     // Insert the new fragrance into the database
-    connection.query(sql , [fragranceName, price, quantity, description, image], (error, results) => {
+    connection.query(sql , [name, quantity, price, description, image], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
             console.error("Error adding fragrance:", error);
@@ -311,9 +302,9 @@ app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
         image = req.file.filename; // set image to be new image filename
     } 
 
-    const sql = 'UPDATE fragrances SET fragranceName = ? , price = ?, quantity = ?, description = ?, image = ? WHERE fragranceId = ?';
+    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE fragranceId = ?';
     // Insert the new fragrance into the database
-    connection.query(sql, [fragranceName, price, quantity, description, image, fragranceId], (error, results) => {
+    connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
         if (error) {
             // Handle any error that occurs during the database operation
             console.error("Error updating fragrance:", error);
