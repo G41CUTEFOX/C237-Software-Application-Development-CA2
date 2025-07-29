@@ -55,12 +55,12 @@
 
         <div class="mb-3">
             <label for="currentDescription" class="form-label">Current Description</label>
-            <textarea class="form-control" id="currentDescription" rows="3" readonly><%= fragrance.fragranceDescription %></textarea>
+            <textarea class="form-control" id="currentDescription" rows="3" readonly><%= fragrance.description %></textarea>
         </div>
         
         <div class="mb-3">
           <label for="description" class="form-label">Update Description</label>
-          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter new description here..."></textarea>
+          <textarea class="form-control" id="description" name="description" rows="3"><%= fragrance.description %></textarea>
         </div>
 
         
