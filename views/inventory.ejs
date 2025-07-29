@@ -47,7 +47,7 @@
         <% for(let i=0; i < fragrances.length; i++) { %>
           <tr>
             <td><a href="/fragrance/<%= fragrances[i].fragranceId %>" ><%= fragrances[i].fragranceName %></a></td>
-            <img src="images/<%= fragrances[i].image || 'default.jpg' %>" width="20%">
+            <td><img src="images/<%= fragrances[i].image || 'default.jpg' %>" width="20%"></td>
             <td><%= fragrances[i].quantity %></td>
             <td>$<%= fragrances[i].price ? parseFloat(fragrances[i].price).toFixed(2) : '0.00' %></td>
             <!-- Edit Link -->
