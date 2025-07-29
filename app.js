@@ -212,7 +212,7 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
     const fragranceId = parseInt(req.params.id);
-    const quantity = parseInt(req.body.quantity) || 1;
+    const quantity = parseInt(req.body.quantity) || 1; // ✅ this is the selected quantity
 
     connection.query('SELECT * FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
         if (error) throw error;
@@ -220,12 +220,10 @@ app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
         if (results.length > 0) {
             const fragrance = results[0];
 
-            // Initialize cart in session if not exists
             if (!req.session.cart) {
                 req.session.cart = [];
             }
 
-            // Check if fragrance already in cart
             const existingItem = req.session.cart.find(item => item.fragranceId === fragranceId);
             if (existingItem) {
                 existingItem.quantity += quantity;
@@ -234,7 +232,7 @@ app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
                     fragranceId: fragrance.fragranceId,
                     fragranceName: fragrance.fragranceName,
                     price: fragrance.price,
-                    quantity: fragrance.quantity,
+                    quantity: quantity, // ✅ fixed: use user-selected quantity
                     description: fragrance.description,
                     image: fragrance.image
                 });
