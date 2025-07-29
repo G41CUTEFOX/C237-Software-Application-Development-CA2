@@ -24,6 +24,9 @@ async function autoCommit() {
 
     await runCommand('git push origin main');
     console.log('Pushed to remote repository.');
+
+    await runCommand('git rebase');
+    console.log('Rebased local repository.');
   } catch (err) {
     // If no changes to commit or other errors
     console.error('Error:', err.trim());
