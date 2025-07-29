@@ -180,6 +180,27 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Route for user shopping page
+app.get('/shopping', checkAuthenticated, (req, res) => {
+    const search = req.query.search || '';
+    const searchTerm = '%' + search + '%';
+    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
+
+    connection.query(query, [searchTerm], (error, results) => {
+        if (error) {
+            console.error("Error loading shopping page:", error);
+            return res.status(500).send("Error loading shopping page");
+        }
+
+        res.render('shopping', {
+            user: req.session.user,
+            fragrances: results,
+            search: search
+        });
+    });
+});
+
+
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
     const fragranceId = parseInt(req.params.id);
     const quantity = parseInt(req.body.quantity) || 1;
