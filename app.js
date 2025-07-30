@@ -163,7 +163,7 @@ app.post('/login', (req, res) => {
         if (results.length > 0) {
             req.session.user = results[0];
 
-            console.log("Login success:", results[0]);  // DEBUG LINE
+            console.log("Login success:", results[0]);  
 
             // Redirect based on role
             if (results[0].role === 'admin') {
@@ -193,8 +193,8 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
             return res.status(500).send("Error loading shopping page");
         }
 
-        console.log("User session:", req.session.user);         // Debug
-        console.log("Fragrance results:", results);             // Debug
+        console.log("User session:", req.session.user);         
+        console.log("Fragrance results:", results);             
 
         try {
             res.render('shopping', {
@@ -203,7 +203,7 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
                 search: search
             });
         } catch (renderErr) {
-            console.error("Render error:", renderErr);          // Log rendering error
+            console.error("Render error:", renderErr);         
             res.status(500).send("Error rendering shopping page");
         }
     });
@@ -213,7 +213,7 @@ app.get('/shopping', checkAuthenticated, (req, res) => {
 
 app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
     const fragranceId = parseInt(req.params.id);
-    const quantity = parseInt(req.body.quantity) || 1; // ✅ this is the selected quantity
+    const quantity = parseInt(req.body.quantity) || 1; 
 
     connection.query('SELECT * FROM fragrances WHERE fragranceId = ?', [fragranceId], (error, results) => {
         if (error) throw error;
@@ -233,7 +233,7 @@ app.post('/add-to-cart/:id', checkAuthenticated, (req, res) => {
                     fragranceId: fragrance.fragranceId,
                     fragranceName: fragrance.fragranceName,
                     price: fragrance.price,
-                    quantity: quantity, // ✅ fixed: use user-selected quantity
+                    quantity: quantity, 
                     description: fragrance.description,
                     image: fragrance.image
                 });
