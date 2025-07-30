@@ -28,7 +28,7 @@
       </div>
     </nav>
 
-  <div class="container">
+  <div class="container pb-5 mb-3">
     <p>Welcome, <%= user.username %> (<%= user.role %>)</p>
     
     <form method="GET" action="/inventory" class="d-flex justify-content-center my-4">
@@ -78,7 +78,7 @@
                   : '0.00' %>
             </td>
             <td>
-              <a href="/updateFragrance/<%= fragrance.fragranceId %>">Edit</a>
+              <button class="btn btn-sm btn-outline-primary"><a href="/updateFragrance/<%= fragrance.fragranceId %>">Edit</a></button>
             </td>
             <td>
               <form
@@ -94,5 +94,6 @@
       </tbody>
     </table>
   </div>
+  <%- include('partials/footer') %>
 </body>
 </html>
