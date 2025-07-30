@@ -56,7 +56,7 @@
             <!-- Fragrance Image -->
             <td>
               <% if (fragrances[i].image && fragrances[i].image.startsWith('http')) { %>
-                <img src="<%= fragrances[i].image %>" alt="<%= fragrances[i].fragranceName %>" width="150">
+                <img src="<%= fragrances[i].image %>" alt="<%= fragrances[i].fragranceName %>" width="20">
               <% } else { %>
                 <img src="/images/<%= fragrances[i].image || 'default.jpg' %>" alt="<%= fragrances[i].fragranceName %>" width="20">
               <% } %>
