@@ -64,25 +64,6 @@
               </a>
             </td>
             <td>
-<<<<<<< HEAD
-              <% if (fragrances[i].image && fragrances[i].image.startsWith('http')) { %>
-                <img src="<%= fragrances[i].image %>" alt="<%= fragrances[i].fragranceName %>" width="70">
-              <% } else { %>
-                <img src="/images/<%= fragrances[i].image || 'default.jpg' %>" alt="<%= fragrances[i].fragranceName %>" width="70">
-              <% } %>
-            </td>
-
-            <!-- Quantity -->
-            <td><%= fragrances[i].quantity %></td>
-
-            <!-- Price -->
-            <td>$<%= fragrances[i].price ? parseFloat(fragrances[i].price).toFixed(2) : '0.00' %></td>
-
-            <!-- Edit Link -->
-            <td><a href="/updateFragrance/<%= fragrances[i].fragranceId %>" class="btn btn-warning">Edit</a></td>
-
-            <!-- Delete Link -->
-=======
               <img
                 src="<%= (fragrance.image || '').trim() || '/images/default.jpg' %>"
                 alt="<%= fragrance.fragranceName %>"
@@ -91,7 +72,6 @@
               >
             </td>
             <td><%= fragrance.quantity %></td>
->>>>>>> dca0d39 (auto commit)
             <td>
               $<%= fragrance.price 
                   ? parseFloat(fragrance.price).toFixed(2) 
