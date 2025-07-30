@@ -35,32 +35,38 @@
     <% if (cart.length === 0) { %>
       <p>Your cart is empty.</p>
     <% } else { %>
-      <table class="table table-bordered">
+      <table class="table table-bordered text-center">
         <thead>
           <tr>
+            <th>Image</th>
             <th>Fragrance</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Total</th>
-            <th>Action</th> <!-- Added column for remove -->
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <% let total = 0; %>
-          <% for (let i = 0; i < cart.length; i++) { %>
+          <% cart.forEach(item => { %>
             <tr>
-              <td><%= cart[i].fragranceName %></td>
-              <td><img src="/images/<%= cart[i].image %>" width="80" class="img-thumbnail"></td>
-              <td><%= cart[i].quantity %></td>
-              <td>$<%= (cart[i].price * cart[i].quantity).toFixed(2) %></td>
               <td>
-                <form action="/remove-from-cart/<%= cart[i].fragranceId %>" method="POST">
+                <% if (item.image && item.image.startsWith('http')) { %>
+                  <img src="<%= item.image %>" width="80" class="img-thumbnail">
+                <% } else { %>
+                  <img src="/images/<%= item.image || 'default.jpg' %>" width="80" class="img-thumbnail">
+                <% } %>
+              </td>
+              <td><%= item.fragranceName %></td>
+              <% total += Number(item.price) * item.quantity; %>
+              <td>$<%= (Number(item.price) * item.quantity).toFixed(2) %></td>
+              <td><%= item.quantity %></td>
+              <td>
+                <form action="/remove-from-cart/<%= item.fragranceId %>" method="POST">
                   <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                 </form>
               </td>
             </tr>
-            <% total += cart[i].price * cart[i].quantity; %>
-          <% }; %>
+          <% }); %>
         </tbody>
       </table>
 
