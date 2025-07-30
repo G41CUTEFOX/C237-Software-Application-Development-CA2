@@ -61,39 +61,39 @@
           </tr>
         </thead>
         <tbody>
-          <% fragrances.forEach(frag => { %>
+          <% fragrances.forEach(fragrance => { %>
             <tr>
               <td>
-                <a href="/fragrance/<%= frag.fragranceId %>">
-                  <%= frag.fragranceName %>
+                <a href="/fragrance/<%= fragrance.fragranceId %>">
+                  <%= fragrance.fragranceName %>
                 </a>
               </td>
               <td>
-                <% if (frag.image) { %>
-                  <img src="/images/<%= frag.image %>" width="100">
+                <% if (fragrance.image) { %>
+                  <img src="/images/<%= fragrance.image %>" width="100">
                 <% } else { %>
                   <span>No image</span>
                 <% } %>
               </td>
-              <td><%= frag.description %></td>
-              <td><%= frag.quantity %></td>
+              <td><%= fragrance.description %></td>
+              <td><%= fragrance.quantity %></td>
               <td>
-                <% if (frag.price != null) { %>
-                  $<%= Number(frag.price).toFixed(2) %>
+                <% if (fragrance.price != null) { %>
+                  $<%= Number(fragrance.price).toFixed(2) %>
                 <% } else { %>
                   N/A
                 <% } %>
               </td>
               <td>
-                <select class="form-control" onchange="document.getElementById('qty-<%= frag.fragranceId %>').value = this.value">
+                <select class="form-control" onchange="document.getElementById('qty-<%= fragrance.fragranceId %>').value = this.value">
                   <% for (let i = 1; i <= 5; i++) { %>
                     <option value="<%= i %>"><%= i %></option>
                   <% } %>
                 </select>
               </td>
               <td>
-                <form action="/add-to-cart/<%= frag.fragranceId %>" method="POST">
-                  <input type="hidden" name="quantity" id="qty-<%= frag.fragranceId %>" value="1">
+                <form action="/add-to-cart/<%= fragrance.fragranceId %>" method="POST">
+                  <input type="hidden" name="quantity" id="qty-<%= fragrance.fragranceId %>" value="1">
                   <button type="submit" class="btn btn-primary">Buy</button>
                 </form>
               </td>
