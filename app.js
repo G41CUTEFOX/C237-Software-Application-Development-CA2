@@ -316,18 +316,21 @@ app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
 
 app.post('/updateFragrance/:id', (req, res) => {
     const fragranceId = req.params.id;
-    const { name, quantity, price, description, image } = req.body;
+    const { name, quantity, price, description, imageUrl, currentImage } = req.body;
 
-    // Use new image URL if provided, else keep current one
-    let imageUrl = image && image.trim() !== '' ? image.trim() : req.body.currentImage;
+    // If imageUrl is provided, use it. Otherwise, use the existing image.
+    const image = imageUrl && imageUrl.trim() !== '' ? imageUrl.trim() : currentImage;
 
-    // Update DB
-    const sql = "UPDATE fragrances SET name = ?, quantity = ?, price = ?, description = ?, image = ? WHERE id = ?";
-    db.query(sql, [name, quantity, price, description, imageUrl, fragranceId], (err) => {
-        if (err) throw err;
-        res.redirect('/fragrances');
+    const sql = 'UPDATE fragrances SET fragranceName = ?, quantity = ?, price = ?, description = ?, image = ? WHERE fragranceId = ?';
+    connection.query(sql, [name, quantity, price, description, image, fragranceId], (error, results) => {
+        if (error) {
+            console.error("Error updating fragrance:", error);
+            return res.status(500).send('Error updating fragrance');
+        }
+        res.redirect('/inventory');
     });
 });
+
 
 app.post('/deleteFragrance/:id', checkAuthenticated, checkAdmin, (req, res) => {
   const fragranceId = req.params.id;
