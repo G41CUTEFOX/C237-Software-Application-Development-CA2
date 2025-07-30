@@ -41,7 +41,7 @@ connection.connect((err) => {
 // Set up view engine
 app.set('view engine', 'ejs');
 //  enable static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 // enable form processing
 app.use(express.urlencoded({
     extended: false
@@ -291,20 +291,30 @@ app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
     res.render('addFragrance', {user: req.session.user } ); 
 });
 
-app.post('/addFragrance', upload.single('image'), (req, res) => {
-    const { name, quantity, price, description } = req.body;
-    let image = req.file ? req.file.filename : null;
+app.post('/addFragrance', (req, res) => {
+  const { name, quantity, price, description, imageUrl } = req.body;
 
-    const sql = 'INSERT INTO fragrances (fragranceName, quantity, price, description, image) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [name, quantity, price, description, image], (error) => {
-        if (error) {
-            console.error("Error adding fragrance:", error);
-            return res.status(500).send('Error adding fragrance');
-        }
-        res.redirect('/inventory');
-    });
+  // Use the URL (trimmed) or null if empty
+  const image = imageUrl.trim() !== '' ? imageUrl.trim() : null;
+
+  const sql = `
+    INSERT INTO fragrances 
+      (fragranceName, quantity, price, description, image)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  connection.query(
+    sql, 
+    [name, quantity, price, description, image],
+    (error) => {
+      if (error) {
+        console.error("Error adding fragrance:", error);
+        return res.status(500).send('Error adding fragrance');
+      }
+      res.redirect('/inventory');
+    }
+  );
 });
-
 
 app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
     const fragranceId = req.params.id;

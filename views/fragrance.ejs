@@ -1,4 +1,4 @@
-<!-- product.ejs -->
+<!-- fragrance.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,13 +45,18 @@
                 <p><b>Fragrance Name:</b><br> <%= fragrance.fragranceName %></p>
                 <p><b>Price:</b><br> $<%= Number(fragrance.price).toFixed(2)%></p> 
                 <p><b>Fragrance Quantity:</b><br> <%= fragrance.quantity %></p>
+<<<<<<< HEAD
                 <p><b>Fragrance Description:</b><br> <%= fragrance.description %></p>
+=======
+                <p><b>Fragrance Description:</b><br> <%= fragrance.escription %></p>
+>>>>>>> dca0d39 (auto commit)
                 <p><b>Fragrance Image:</b><br>
-                    <% if (fragrance.image && fragrance.image.startsWith('http')) { %>
-                        <img src="<%= fragrance.image %>" alt="<%= fragrance.fragranceName %>" width="20%">
-                    <% } else { %>
-                        <img src="/images/<%= fragrance.image %>" alt="<%= fragrance.fragranceName %>" width="20%">
-                    <% } %>
+                    <img
+                      src="<%= (fragrance.image || '').trim() || '/images/default.jpg' %>"
+                      alt="<%= fragrance.fragranceName %>"
+                      style="max-width:100%; height:auto;"
+                      onerror="this.onerror=null; this.src='/images/default.jpg';"
+                    >
                 </p>
             </div>
         <% } else { %>
