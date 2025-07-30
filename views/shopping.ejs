@@ -68,13 +68,13 @@
                   <%= fragrance.fragranceName %>
                 </a>
               </td>
-              <td>
-                <% if (fragrance.image) { %>
-                  <img src="/images/<%= fragrance.image %>" width="100">
-                <% } else { %>
-                  <span>No image</span>
-                <% } %>
-              </td>
+            <td>
+              <% if (fragrances[i].image && fragrances[i].image.startsWith('http')) { %>
+                <img src="<%= fragrances[i].image %>" alt="<%= fragrances[i].fragranceName %>" width="20">
+              <% } else { %>
+                <img src="/images/<%= fragrances[i].image || 'default.jpg' %>" alt="<%= fragrances[i].fragranceName %>" width="20">
+              <% } %>
+            </td>
               <td><%= fragrance.description %></td>
               <td><%= fragrance.quantity %></td>
               <td>
