@@ -314,26 +314,18 @@ app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
     });
 });
 
-app.post('/updateFragrance/:id', upload.single('image'), (req, res) => {
+app.post('/updateFragrance/:id', (req, res) => {
     const fragranceId = req.params.id;
-    // Extract fragrance data from the request body
-    const { name, quantity, price, description } = req.body;
-    let image  = req.body.currentImage; //retrieve current image filename
-    if (req.file) { //if new image is uploaded
-        image = req.file.filename; // set image to be new image filename
-    } 
+    const { name, quantity, price, description, image } = req.body;
 
-    const sql = 'UPDATE fragrances SET fragranceName = ? , quantity = ?, price = ?, image = ?, description = ? WHERE fragranceId = ?';
-    // Insert the new fragrance into the database
-    connection.query(sql, [name, quantity, price, image, description, fragranceId], (error, results) => {
-        if (error) {
-            // Handle any error that occurs during the database operation
-            console.error("Error updating fragrance:", error);
-            res.status(500).send('Error updating fragrance');
-        } else {
-            // Send a success response
-            res.redirect('/inventory');
-        }
+    // Use new image URL if provided, else keep current one
+    let imageUrl = image && image.trim() !== '' ? image.trim() : req.body.currentImage;
+
+    // Update DB
+    const sql = "UPDATE fragrances SET name = ?, quantity = ?, price = ?, description = ?, image = ? WHERE id = ?";
+    db.query(sql, [name, quantity, price, description, imageUrl, fragranceId], (err) => {
+        if (err) throw err;
+        res.redirect('/fragrances');
     });
 });
 
