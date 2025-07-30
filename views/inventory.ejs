@@ -72,8 +72,12 @@
             <td><a href="/updateFragrance/<%= fragrances[i].fragranceId %>">Edit</a></td>
 
             <!-- Delete Link -->
-            <td><a href="/deleteFragrance/<%= fragrances[i].fragranceId %>" onclick="return confirm('Are you sure you want to delete this Fragrance?')">Delete</a></td>
-          </tr>
+            <td>
+              <form action="/deleteFragrance/<%= fragrances[i].fragranceId %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this Fragrance?')">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+            </td>
+            </tr>
         <% } %>
       </tbody>
     </table>

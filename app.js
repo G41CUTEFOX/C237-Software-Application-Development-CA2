@@ -273,20 +273,20 @@ app.get('/addFragrance', checkAuthenticated, checkAdmin, (req, res) => {
     res.render('addFragrance', {user: req.session.user } ); 
 });
 
-app.post('/addFragrance', (req, res) => {
-    // Extract fragrance data from the request body
-    const { name, quantity, price, description, image } = req.body; 
+app.post('/addFragrance', upload.single('image'), (req, res) => {
+    const { name, quantity, price, description } = req.body;
+    let image = req.file ? req.file.filename : null;
 
     const sql = 'INSERT INTO fragrances (fragranceName, quantity, price, description, image) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [name, quantity, price, description, image], (error, results) => {
-    if (error) {
-        console.error("Error adding fragrance:", error);
-        res.status(500).send('Error adding fragrance');
-    } else {
+    connection.query(sql, [name, quantity, price, description, image], (error) => {
+        if (error) {
+            console.error("Error adding fragrance:", error);
+            return res.status(500).send('Error adding fragrance');
+        }
         res.redirect('/inventory');
-    }
-  });
+    });
 });
+
 
 app.get('/updateFragrance/:id',checkAuthenticated, checkAdmin, (req,res) => {
     const fragranceId = req.params.id;
