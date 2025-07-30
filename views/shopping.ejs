@@ -53,7 +53,6 @@
           <tr>
             <th>Fragrance Name</th>
             <th>Image</th>
-            <th>Description</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Select Quantity</th>
@@ -75,7 +74,6 @@
                   <img src="/images/<%= fragrance.image || 'default.jpg' %>" alt="<%= fragrance.fragranceName %>" width="80">
                 <% } %>
               </td> 
-              <td><%= fragrance.description %></td>
               <td><%= fragrance.quantity %></td>  
               <td>
                 <% if (fragrance.price != null) { %>
