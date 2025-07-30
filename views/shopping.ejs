@@ -82,6 +82,7 @@
                   N/A
                 <% } %>
               </td>
+              <td><%= fragrance.description %></td>
               <td>
                 <select class="form-control" onchange="document.getElementById('qty-<%= fragrance.fragranceId %>').value = this.value">
                   <% for (let i = 1; i <= 5; i++) { %>
