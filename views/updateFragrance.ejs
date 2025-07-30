@@ -68,10 +68,14 @@
           <img src="<%= fragrance.image %>" class="img-thumbnail" style="width: 150px;">
         </div>
 
+        <!-- Hidden field for existing image -->
+        <input type="hidden" name="currentImage" value="<%= fragrance.image %>">
+
         <div class="mb-3">
-          <label class="form-label">New Image URL</label>
-          <input type="text" class="form-control" name="image" placeholder="Enter new image URL">
+        <label class="form-label">New Image URL</label>
+        <input type="text" class="form-control" name="imageUrl" placeholder="Enter new image URL">
         </div>
+
 
         <div class="d-grid gap-2">
           <button type="submit" class="btn btn-primary">Update Fragrance</button>
