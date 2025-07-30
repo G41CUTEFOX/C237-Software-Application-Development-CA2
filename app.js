@@ -22,29 +22,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-const pool = mysql.createPool({
+const connection = mysql.createConnection({
     host: 'mfk1th.h.filess.io',
     user: 'C237Team39_identitydo',
-    password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
-    database: 'C237Team39_identitydo',
-    port: 61002,
-    waitForConnections: true,
-    connectionLimit: 10,  // You can increase if needed
-    queueLimit: 0         // 0 = unlimited queued requests
+    password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1!',
+    database: 'C237Team39_identitydo'
 });
 
-pool.query('SELECT * FROM fragrances', (err, results) => {
-  if (err) {
-    console.error('Query error:', err);
-    return;
-  }
-  console.log(results);
+
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
 });
-
-// This makes `connection.query()` work in the rest of your file
-const connection = pool;
-
-module.exports = pool;
 
 // Set up view engine
 app.set('view engine', 'ejs');
