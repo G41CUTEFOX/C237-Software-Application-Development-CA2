@@ -107,11 +107,29 @@ app.get('/',  (req, res) => {
 });
 
 app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
-    // Fetch data from MySQL
-    connection.query('SELECT fragranceId, fragranceName, image, quantity, price FROM fragrances', (error, results) => {
-    //connection.query('SELECT * FROM fragrances', (error, results) => {
-      if (error) throw error;
-      res.render('inventory', { fragrances: results, user: req.session.user });
+     const search = req.query.search || '';
+    const searchTerm = '%' + search + '%';
+    const query = 'SELECT * FROM fragrances WHERE fragranceName LIKE ?';
+
+    connection.query(query, [searchTerm], (error, results) => {
+        if (error) {
+            console.error("Error loading inventory page:", error);
+            return res.status(500).send("Error loading shopping page");
+        }
+
+        console.log("User session:", req.session.user);         
+        console.log("Fragrance results:", results);             
+
+        try {
+            res.render('inventory', {
+                user: req.session.user,
+                fragrances: results,
+                search: search
+            });
+        } catch (renderErr) {
+            console.error("Render error:", renderErr);         
+            res.status(500).send("Error rendering inventory page");
+        }
     });
 });
 
