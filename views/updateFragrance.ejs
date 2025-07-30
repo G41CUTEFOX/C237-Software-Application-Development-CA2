@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <title>Explorer Sauvage</title>
+  <title>Explorer Sauvage - Update Fragrance</title>
 </head>
 <body>
   <!-- Navbar -->
@@ -36,7 +36,7 @@
     <h2 class="text-center mb-4">Update Fragrance</h2>
     
     <% if (fragrance) { %>
-      <form action="/updateFragrance/<%= fragrance.fragranceId %>" method="POST" enctype="multipart/form-data" class="mx-auto" style="max-width: 500px;">
+      <form action="/updateFragrance/<%= fragrance.fragranceId %>" method="POST" class="mx-auto" style="max-width: 500px;">
         
         <div class="mb-3">
           <label for="name" class="form-label">Fragrance Name</label>
@@ -54,28 +54,22 @@
         </div>
 
         <div class="mb-3">
-            <label for="currentDescription" class="form-label">Current Description</label>
-            <textarea class="form-control" id="currentDescription" rows="3" readonly><%= fragrance.description %></textarea>
-        </div>
-        
-        <div class="mb-3">
           <label for="description" class="form-label">Update Description</label>
-          <textarea class="form-control" id="description" name="description" rows="3"><%= fragrance.description %></textarea>
+          <textarea class="form-control" id="description" name="description" rows="3" required><%= fragrance.description %></textarea>
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Current Image</label>
+          <label class="form-label">Current Image</label><br>
           <img src="<%= fragrance.image %>" class="img-thumbnail" style="width: 150px;">
         </div>
 
-        <!-- Hidden field for existing image -->
+        <!-- Hidden input to keep current image if no new URL provided -->
         <input type="hidden" name="currentImage" value="<%= fragrance.image %>">
 
         <div class="mb-3">
-        <label class="form-label">New Image URL</label>
-        <input type="text" class="form-control" name="imageUrl" placeholder="Enter new image URL">
+          <label class="form-label">New Image URL (optional)</label>
+          <input type="text" class="form-control" name="imageUrl" placeholder="Enter new image URL if changing">
         </div>
-
 
         <div class="d-grid gap-2">
           <button type="submit" class="btn btn-primary">Update Fragrance</button>
@@ -83,7 +77,7 @@
         </div>
       </form>
     <% } else { %>
-      <p class="text-center">No product found.</p>
+      <p class="text-center text-danger">No product found.</p>
     <% } %>
   </div>
 </body>
