@@ -23,19 +23,11 @@ const upload = multer({ storage: storage });
 
 
 const connection = mysql.createConnection({
-<<<<<<< HEAD
-    host: 'mfk1th.h.filess.io',
-    user: 'C237Team39_identitydo',
-    password: 'bad27c54c3cf6aa4677445bd8ce2f7effe5ed2d1',
-    database: 'C237Team39_identitydo',
-    port:'61002'
-=======
     host: 'c237-all.mysql.database.azure.com',
     user: 'c237admin',
     password: 'c2372025!',
     database: 'c237team39_identitydo.fragrances',
     port:'3306'
->>>>>>> 7393478 (auto commit)
 });
 
 connection.connect((err) => {
