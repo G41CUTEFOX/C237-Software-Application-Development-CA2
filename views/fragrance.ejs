@@ -45,7 +45,7 @@
                 <p><b>Price:</b><br> $<%= number(fragrance.price).toFixed(2) %></p> 
                 <p><b>Fragrance Quantity:</b><br> <%= fragrance.quantity %></p>
                 <p><b>Fragrance Description:</b><br> <%= fragrance.fragranceDescription %></p>
-                <p><b>Fragrance Image:</b><br> <img src = "../images/<%= fragrance.image %>" width="20%"></p>
+                <p><b>Fragrance Image:</b><br> <img src = "/images/<%= fragrance.image %>" width="20%"></p>
             </div>
         <% } else { %>
             <p>No fragrance found.</p>
