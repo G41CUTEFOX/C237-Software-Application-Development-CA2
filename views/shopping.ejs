@@ -75,6 +75,8 @@
                   <img src="/images/<%= fragrance.image || 'default.jpg' %>" alt="<%= fragrance.fragranceName %>" width="80">
                 <% } %>
               </td> 
+              <td><%= fragrance.description %></td>
+              <td><%= fragrance.quantity %></td>  
               <td>
                 <% if (fragrance.price != null) { %>
                   $<%= Number(fragrance.price).toFixed(2) %>
@@ -82,8 +84,6 @@
                   N/A
                 <% } %>
               </td>
-              <td><%= fragrance.description %></td>
-              <td><%= fragrance.quantity %></td>
               <td>
                 <select class="form-control" onchange="document.getElementById('qty-<%= fragrance.fragranceId %>').value = this.value">
                   <% for (let i = 1; i <= 5; i++) { %>
