@@ -69,10 +69,10 @@
                 </a>
               </td>
             <td>
-              <% if (fragrances[i].image && fragrances[i].image.startsWith('http')) { %>
-                <img src="<%= fragrances[i].image %>" alt="<%= fragrances[i].fragranceName %>" width="20">
+              <% if (fragrance[i].image && fragrance[i].image.startsWith('http')) { %>
+                <img src="<%= fragrance[i].image %>" alt="<%= fragrance[i].fragranceName %>" width="20">
               <% } else { %>
-                <img src="/images/<%= fragrances[i].image || 'default.jpg' %>" alt="<%= fragrances[i].fragranceName %>" width="20">
+                <img src="/images/<%= fragrance[i].image || 'default.jpg' %>" alt="<%= fragrance[i].fragranceName %>" width="20">
               <% } %>
             </td>
               <td><%= fragrance.description %></td>
