@@ -63,15 +63,14 @@
           <textarea class="form-control" id="description" name="description" rows="3"><%= fragrance.description %></textarea>
         </div>
 
-
         <div class="mb-3">
           <label class="form-label">Current Image</label>
-          <img src="/images/<%= fragrance.image %>" class="img-thumbnail" style="width: 150px;">
+          <img src="<%= fragrance.image %>" class="img-thumbnail" style="width: 150px;">
         </div>
 
         <div class="mb-3">
           <label class="form-label">New Image URL</label>
-          <input type="text" class="form-control" name="newImage" placeholder="Enter new image URL">
+          <input type="text" class="form-control" name="image" placeholder="Enter new image URL">
         </div>
 
         <div class="d-grid gap-2">
