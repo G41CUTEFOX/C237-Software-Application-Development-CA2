@@ -75,6 +75,7 @@
                   <img src="/images/<%= fragrance.image || 'default.jpg' %>" alt="<%= fragrance.fragranceName %>" width="80">
                 <% } %>
               </td> 
+              <td>
                 <% if (fragrance.price != null) { %>
                   $<%= Number(fragrance.price).toFixed(2) %>
                 <% } else { %>
