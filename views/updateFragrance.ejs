@@ -66,13 +66,12 @@
 
         <div class="mb-3">
           <label class="form-label">Current Image</label>
-          <input type="text" class="form-control" name="currentImage" value="<%= fragrance.image %>" readonly>
-          <img src="/images/<%= fragrance.image %>" class="img-thumbnail mt-2" style="width: 150px;">
+          <img src="/images/<%= fragrance.image %>" class="img-thumbnail" style="width: 150px;">
         </div>
 
-        <div class="mb-4">
-          <label for="image" class="form-label">Upload New Image</label>
-          <input class="form-control" type="file" id="image" name="image" accept="image/*">
+        <div class="mb-3">
+          <label class="form-label">New Image URL</label>
+          <input type="text" class="form-control" name="newImage" placeholder="Enter new image URL">
         </div>
 
         <div class="d-grid gap-2">
