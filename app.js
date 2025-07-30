@@ -360,6 +360,15 @@ app.get('/dashboard', checkAuthenticated, (req, res) => {
     });
 });
 
+app.post('/remove-from-cart/:id', (req, res) => {
+  const fragranceIdToRemove = parseInt(req.params.id);
+
+  if (req.session.cart) {
+    req.session.cart = req.session.cart.filter(item => item.fragranceId !== fragranceIdToRemove);
+  }
+
+  res.redirect('/cart');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
