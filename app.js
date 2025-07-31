@@ -25,7 +25,7 @@ const fs = require('fs');
 
 const connection = mysql.createConnection({
   host: 'c237web.mysql.database.azure.com',
-  user: 'c237student',   // include @servername if required
+  user: 'c237student', 
   password: 'c237student!',
   database: 'C237team39_identitydo.fragrances',
   port: 3306,
