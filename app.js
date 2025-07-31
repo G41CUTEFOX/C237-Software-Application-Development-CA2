@@ -21,13 +21,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const fs = require('fs');
 
 const connection = mysql.createConnection({
-    host: 'c237web.mysql.database.azure.com',
-    user: 'c237student',
-    password: 'c237student!',
-    database: 'c237team39_identitydo.fragrances',
-    port:'3306'
+  host: 'c237web.mysql.database.azure.com',
+  user: 'c237student',   // include @servername if required
+  password: 'c237student!',
+  database: 'C237team39_identitydo.fragrances',
+  port: 3306,
+ssl: {
+  ca: fs.readFileSync(
+    path.join(__dirname, 'public', 'BaltimoreCyberTrustRoot.crt.pem')
+  ),
+  rejectUnauthorized: false
+}
 });
 
 connection.connect((err) => {
