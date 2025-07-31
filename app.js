@@ -23,9 +23,9 @@ const upload = multer({ storage: storage });
 
 
 const connection = mysql.createConnection({
-    host: 'c237-all.mysql.database.azure.com',
-    user: 'c237admin',
-    password: 'c2372025!',
+    host: 'c237web.mysql.database.azure.com',
+    user: 'c237student',
+    password: 'c237student!',
     database: 'c237team39_identitydo.fragrances',
     port:'3306'
 });
@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // enable form processing
 app.use(express.urlencoded({
     extended: false
-}));
+}));    
 app.use(express.json());
 
 
